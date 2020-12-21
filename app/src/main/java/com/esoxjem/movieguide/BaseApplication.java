@@ -1,28 +1,66 @@
 package com.esoxjem.movieguide;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
+
+import com.esoxjem.movieguide.details.DetailsComponent;
+import com.esoxjem.movieguide.details.DetailsModule;
+import com.esoxjem.movieguide.favorites.FavoritesModule;
+import com.esoxjem.movieguide.listing.ListingComponent;
+import com.esoxjem.movieguide.listing.ListingModule;
+import com.esoxjem.movieguide.network.NetworkModule;
+import com.esoxjem.movieguide.listing.sorting.SortingModule;
 
 /**
  * @author arun
  */
 public class BaseApplication extends Application
 {
-    private static Context appContext;
+    private AppComponent appComponent;
+    private DetailsComponent detailsComponent;
+    private ListingComponent listingComponent;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
         StrictMode.enableDefaults();
-        appContext = getApplicationContext();
+        appComponent = createAppComponent();
     }
 
-    @NonNull
-    public static Context getAppContext()
+    private AppComponent createAppComponent()
     {
-        return appContext;
+        return DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .networkModule(new NetworkModule())
+                .favoritesModule(new FavoritesModule())
+                .build();
+    }
+
+    public DetailsComponent createDetailsComponent()
+    {
+        detailsComponent = appComponent.plus(new DetailsModule());
+        return detailsComponent;
+    }
+
+    public void releaseDetailsComponent()
+    {
+        detailsComponent = null;
+    }
+
+    public ListingComponent createListingComponent()
+    {
+        listingComponent = appComponent.plus(new ListingModule());
+        return listingComponent;
+    }
+
+    public void releaseListingComponent()
+    {
+        listingComponent = null;
+    }
+
+    public ListingComponent getListingComponent()
+    {
+        return listingComponent;
     }
 }

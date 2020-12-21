@@ -1,22 +1,23 @@
 package com.esoxjem.movieguide.details;
 
-import com.esoxjem.movieguide.entities.Movie;
+import com.esoxjem.movieguide.Movie;
 
 /**
  * @author arun
  */
-public class MovieDetailsPresenter implements IMovieDetailsPresenter
+public interface MovieDetailsPresenter
 {
-    private IMovieDetailsView mMovieDetailsView;
+    void showDetails(Movie movie);
 
-    public MovieDetailsPresenter(IMovieDetailsView movieDetailsView)
-    {
-        mMovieDetailsView = movieDetailsView;
-    }
+    void showTrailers(Movie movie);
 
-    @Override
-    public void showDetails(Movie movie)
-    {
-        mMovieDetailsView.showDetails(movie);
-    }
+    void showReviews(Movie movie);
+
+    void showFavoriteButton(Movie movie);
+
+    void onFavoriteClick(Movie movie);
+
+    void setView(MovieDetailsView view);
+
+    void destroy();
 }

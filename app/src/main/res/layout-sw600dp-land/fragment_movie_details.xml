@@ -31,7 +31,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/my_recycler_view"
+        android:id="@+id/scrolling_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -46,7 +46,10 @@
                 android:id="@+id/movie_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
                 android:textColor="@android:color/white"
                 android:textSize="32sp"/>
 
@@ -54,28 +57,63 @@
                 android:id="@+id/movie_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"/>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="sans-serif-light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/movie_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"/>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="sans-serif-light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/summary"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/movie_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
+                android:fontFamily="sans-serif-light"
+                android:lineSpacingMultiplier="1.2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/white"/>
+
+            <include
+                layout="@layout/trailers_and_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"/>
         </LinearLayout>
 
 
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_favorite_border_white_24dp"
+        app:elevation="6dp"
+        app:layout_anchor="@id/scrolling_container"
+        app:layout_anchorGravity="bottom|right|end"
+        app:pressedTranslationZ="12dp"
+        app:rippleColor="@android:color/white"/>
 
 </android.support.design.widget.CoordinatorLayout>
