@@ -1,5 +1,7 @@
 package com.esoxjem.movieguide.listing;
 
+import androidx.annotation.NonNull;
+
 import com.esoxjem.movieguide.Movie;
 import com.esoxjem.movieguide.util.EspressoIdlingResource;
 import com.esoxjem.movieguide.util.RxUtils;
@@ -18,8 +20,10 @@ class MoviesListingPresenterImpl implements MoviesListingPresenter {
     private MoviesListingView view;
     private MoviesListingInteractor moviesInteractor;
     private Disposable fetchSubscription;
+    private Disposable movieSearchSubscription;
     private int currentPage = 1;
     private List<Movie> loadedMovies = new ArrayList<>();
+    private boolean isLoading = false;
 
     MoviesListingPresenterImpl(MoviesListingInteractor interactor) {
         moviesInteractor = interactor;
@@ -34,12 +38,17 @@ class MoviesListingPresenterImpl implements MoviesListingPresenter {
     @Override
     public void destroy() {
         view = null;
-        RxUtils.unsubscribe(fetchSubscription);
+        RxUtils.unsubscribe(fetchSubscription, movieSearchSubscription);
     }
 
     private void displayMovies() {
-        EspressoIdlingResource.increment();
+        if (isLoading) return;
+
+        isLoading = true;
         showLoading();
+
+        EspressoIdlingResource.increment();
+
         fetchSubscription = moviesInteractor.fetchMovies(currentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,12 +69,40 @@ class MoviesListingPresenterImpl implements MoviesListingPresenter {
 
     @Override
     public void nextPage() {
+        if (isLoading)
+            return;
         if (moviesInteractor.isPaginationSupported()) {
             currentPage++;
             displayMovies();
         }
     }
 
+    @Override
+    public void searchMovie(final String searchText) {
+        if (searchText == null || searchText.length() < 1) {
+            displayMovies();
+        } else {
+            displayMovieSearchResult(searchText);
+        }
+    }
+
+    private void displayMovieSearchResult(@NonNull final String searchText) {
+        isLoading = true;
+        showLoading();
+        movieSearchSubscription = moviesInteractor.searchMovie(searchText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onMovieSearchSuccess, this::onMovieSearchFailed);
+    }
+
+    @Override
+    public void searchMovieBackPressed() {
+        if (isLoading) {
+            loadedMovies.clear();
+            isLoading = false;
+            displayMovies();
+        }
+    }
 
     private void showLoading() {
         if (isViewAttached()) {
@@ -79,13 +116,31 @@ class MoviesListingPresenterImpl implements MoviesListingPresenter {
         } else {
             loadedMovies = new ArrayList<>(movies);
         }
+
         if (isViewAttached()) {
             view.showMovies(loadedMovies);
         }
+
+        isLoading = false;
     }
 
     private void onMovieFetchFailed(Throwable e) {
         view.loadingFailed(e.getMessage());
+        isLoading = false;
+    }
+
+    private void onMovieSearchSuccess(List<Movie> movies) {
+        loadedMovies.clear();
+        loadedMovies = new ArrayList<>(movies);
+        if (isViewAttached()) {
+            view.showMovies(loadedMovies);
+        }
+        isLoading = false;
+    }
+
+    private void onMovieSearchFailed(Throwable e) {
+        view.loadingFailed(e.getMessage());
+        isLoading = false;
     }
 
     private boolean isViewAttached() {

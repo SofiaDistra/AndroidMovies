@@ -6,15 +6,16 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.esoxjem.movieguide.BaseApplication;
 import com.esoxjem.movieguide.Constants;
@@ -22,6 +23,9 @@ import com.esoxjem.movieguide.Movie;
 import com.esoxjem.movieguide.R;
 import com.esoxjem.movieguide.R2;
 import com.esoxjem.movieguide.listing.sorting.SortingDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,28 +71,19 @@ public class MoviesListingFragment extends Fragment implements MoviesListingView
         View rootView = inflater.inflate(R.layout.fragment_movies, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         initLayoutReferences();
-        moviesListing.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (!recyclerView.canScrollVertically(1)) {
-                    moviesPresenter.nextPage();
-                }
-            }
-        });
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        moviesPresenter.setView(this);
         if (savedInstanceState != null) {
             movies = savedInstanceState.getParcelableArrayList(Constants.MOVIE);
             adapter.notifyDataSetChanged();
             moviesListing.setVisibility(View.VISIBLE);
         } else {
-            moviesPresenter.setView(this);
+            moviesPresenter.firstPage();
         }
     }
 
@@ -97,7 +92,7 @@ public class MoviesListingFragment extends Fragment implements MoviesListingView
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R2.id.action_sort:
-                moviesPresenter.setView(this);
+                moviesPresenter.firstPage();
                 displaySortingOptions();
         }
 
@@ -118,11 +113,26 @@ public class MoviesListingFragment extends Fragment implements MoviesListingView
         } else {
             columns = getResources().getInteger(R.integer.no_of_columns);
         }
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), columns);
+        LinearLayoutManager layoutManager = new GridLayoutManager(getActivity(), columns);
 
         moviesListing.setLayoutManager(layoutManager);
         adapter = new MoviesListingAdapter(movies, this);
         moviesListing.setAdapter(adapter);
+
+        moviesListing.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NotNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                if ((visibleItemCount + firstVisibleItemPosition) >=
+                        totalItemCount && firstVisibleItemPosition >= 0) {
+                    moviesPresenter.nextPage();
+                }
+            }
+        });
     }
 
     @Override
@@ -174,6 +184,13 @@ public class MoviesListingFragment extends Fragment implements MoviesListingView
         outState.putParcelableArrayList(Constants.MOVIE, (ArrayList<? extends Parcelable>) movies);
     }
 
+    public void searchViewClicked(String searchText) {
+        moviesPresenter.searchMovie(searchText);
+    }
+
+    public void searchViewBackButtonClicked() {
+        moviesPresenter.searchMovieBackPressed();
+    }
 
     public interface Callback {
         void onMoviesLoaded(Movie movie);
