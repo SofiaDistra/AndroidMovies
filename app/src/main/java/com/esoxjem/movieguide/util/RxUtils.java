@@ -7,6 +7,11 @@ import io.reactivex.disposables.Disposable;
  * @author arun
  */
 public class RxUtils {
+
+    private RxUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void unsubscribe(Disposable subscription) {
         if (subscription != null && !subscription.isDisposed()) {
             subscription.dispose();

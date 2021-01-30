@@ -23,6 +23,10 @@ import androidx.test.espresso.IdlingResource;
  */
 public class EspressoIdlingResource {
 
+    private EspressoIdlingResource() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static final String RESOURCE = "GLOBAL";
 
     private static SimpleCountingIdlingResource mCountingIdlingResource =
