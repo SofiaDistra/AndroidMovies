@@ -21,7 +21,6 @@ import com.esoxjem.movieguide.BaseApplication;
 import com.esoxjem.movieguide.Constants;
 import com.esoxjem.movieguide.Movie;
 import com.esoxjem.movieguide.R;
-import com.esoxjem.movieguide.R2;
 import com.esoxjem.movieguide.listing.sorting.SortingDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -40,7 +39,7 @@ public class MoviesListingFragment extends Fragment implements MoviesListingView
     @Inject
     MoviesListingPresenter moviesPresenter;
 
-    @BindView(R2.id.movies_listing)
+    @BindView(R.id.movies_listing)
     RecyclerView moviesListing;
 
     private RecyclerView.Adapter adapter;
@@ -90,12 +89,11 @@ public class MoviesListingFragment extends Fragment implements MoviesListingView
     @SuppressLint("InvalidR2Usage")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R2.id.action_sort:
-                moviesPresenter.firstPage();
-                displaySortingOptions();
+        // when button next to search is clicked
+        if(item.getItemId() == R.id.action_sort) {
+            moviesPresenter.firstPage();
+            displaySortingOptions();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

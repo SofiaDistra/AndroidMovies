@@ -28,7 +28,6 @@ import com.esoxjem.movieguide.BaseApplication;
 import com.esoxjem.movieguide.Constants;
 import com.esoxjem.movieguide.Movie;
 import com.esoxjem.movieguide.R;
-import com.esoxjem.movieguide.R2;
 import com.esoxjem.movieguide.Review;
 import com.esoxjem.movieguide.Video;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -47,31 +46,31 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
     @Inject
     MovieDetailsPresenter movieDetailsPresenter;
 
-    @BindView(R2.id.movie_poster)
+    @BindView(R.id.movie_poster)
     ImageView poster;
-    @BindView(R2.id.collapsing_toolbar)
+    @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
-    @BindView(R2.id.movie_name)
+    @BindView(R.id.movie_name)
     TextView title;
-    @BindView(R2.id.movie_year)
+    @BindView(R.id.movie_year)
     TextView releaseDate;
-    @BindView(R2.id.movie_rating)
+    @BindView(R.id.movie_rating)
     TextView rating;
-    @BindView(R2.id.movie_description)
+    @BindView(R.id.movie_description)
     TextView overview;
-    @BindView(R2.id.trailers_label)
+    @BindView(R.id.trailers_label)
     TextView label;
-    @BindView(R2.id.trailers)
+    @BindView(R.id.trailers)
     LinearLayout trailers;
-    @BindView(R2.id.trailers_container)
+    @BindView(R.id.trailers_container)
     HorizontalScrollView horizontalScrollView;
-    @BindView(R2.id.reviews_label)
+    @BindView(R.id.reviews_label)
     TextView reviews;
-    @BindView(R2.id.reviews)
+    @BindView(R.id.reviews)
     LinearLayout reviewsContainer;
-    @BindView(R2.id.favorite)
+    @BindView(R.id.favorite)
     FloatingActionButton favorite;
-    @BindView(R2.id.toolbar)
+    @BindView(R.id.toolbar)
     @Nullable
     Toolbar toolbar;
 
@@ -218,18 +217,18 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
     }
 
     @SuppressLint("InvalidR2Usage")
-    @OnClick(R2.id.favorite)
+    @OnClick(R.id.favorite)
     public void onClick(View view) {
         switch (view.getId()) {
-            case R2.id.video_thumb:
+            case R.id.video_thumb:
                 onThumbnailClick(view);
                 break;
 
-            case R2.id.review_content:
+            case R.id.review_content:
                 onReviewClick((TextView) view);
                 break;
 
-            case R2.id.favorite:
+            case R.id.favorite:
                 onFavoriteClick();
                 break;
 

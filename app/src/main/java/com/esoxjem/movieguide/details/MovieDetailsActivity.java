@@ -30,10 +30,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-        }
+        if(item.getItemId() ==  android.R.id.home) NavUtils.navigateUpFromSameTask(this);
         return super.onOptionsItemSelected(item);
     }
 }

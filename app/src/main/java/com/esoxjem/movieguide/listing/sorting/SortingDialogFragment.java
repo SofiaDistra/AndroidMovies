@@ -15,7 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.esoxjem.movieguide.BaseApplication;
 import com.esoxjem.movieguide.R;
-import com.esoxjem.movieguide.R2;
 import com.esoxjem.movieguide.listing.MoviesListingPresenter;
 
 import javax.inject.Inject;
@@ -31,15 +30,15 @@ public class SortingDialogFragment extends DialogFragment implements SortingDial
     @Inject
     SortingDialogPresenter sortingDialogPresenter;
 
-    @BindView(R2.id.most_popular)
+    @BindView(R.id.most_popular)
     RadioButton mostPopular;
-    @BindView(R2.id.highest_rated)
+    @BindView(R.id.highest_rated)
     RadioButton highestRated;
-    @BindView(R2.id.favorites)
+    @BindView(R.id.favorites)
     RadioButton favorites;
-    @BindView(R2.id.newest)
+    @BindView(R.id.newest)
     RadioButton newest;
-    @BindView(R2.id.sorting_group)
+    @BindView(R.id.sorting_group)
     RadioGroup sortingOptionsGroup;
 
     private static MoviesListingPresenter moviesListingPresenter;
@@ -102,25 +101,29 @@ public class SortingDialogFragment extends DialogFragment implements SortingDial
     @SuppressLint("InvalidR2Usage")
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+        // when sorting type is chosen
         switch (checkedId) {
-            case R2.id.most_popular:
+            case R.id.most_popular:
                 sortingDialogPresenter.onPopularMoviesSelected();
                 moviesListingPresenter.firstPage();
                 break;
 
-            case R2.id.highest_rated:
+            case R.id.highest_rated:
                 sortingDialogPresenter.onHighestRatedMoviesSelected();
                 moviesListingPresenter.firstPage();
                 break;
 
-            case R2.id.favorites:
+            case R.id.favorites:
                 sortingDialogPresenter.onFavoritesSelected();
                 moviesListingPresenter.firstPage();
                 break;
-            case R2.id.newest:
+            case R.id.newest:
                 sortingDialogPresenter.onNewestMoviesSelected();
                 moviesListingPresenter.firstPage();
                 break;
+            default:
+                sortingDialogPresenter.onNewestMoviesSelected();
+                moviesListingPresenter.firstPage();
         }
     }
 

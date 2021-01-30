@@ -21,7 +21,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.esoxjem.movieguide.Api;
 import com.esoxjem.movieguide.Movie;
 import com.esoxjem.movieguide.R;
-import com.esoxjem.movieguide.R2;
 
 import java.util.List;
 
@@ -37,11 +36,11 @@ public class MoviesListingAdapter extends RecyclerView.Adapter<MoviesListingAdap
     private MoviesListingView view;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R2.id.movie_poster)
+        @BindView(R.id.movie_poster)
         ImageView poster;
-        @BindView(R2.id.title_background)
+        @BindView(R.id.title_background)
         View titleBackground;
-        @BindView(R2.id.movie_name)
+        @BindView(R.id.movie_name)
         TextView name;
 
         public Movie movie;
