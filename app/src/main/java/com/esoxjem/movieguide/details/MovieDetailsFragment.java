@@ -74,16 +74,16 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
     @Nullable
     Toolbar toolbar;
 
-    private Movie movie;
+    private Movie mymovie;
     private Unbinder unbinder;
 
     public MovieDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static MovieDetailsFragment getInstance(@NonNull Movie movie) {
+    public static MovieDetailsFragment getInstance(@NonNull Movie mymovie) {
         Bundle args = new Bundle();
-        args.putParcelable(Constants.MOVIE, movie);
+        args.putParcelable(Constants.MOVIE, mymovie);
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
         movieDetailsFragment.setArguments(args);
         return movieDetailsFragment;
@@ -111,7 +111,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
         if (getArguments() != null) {
             Movie movie = (Movie) getArguments().get(Constants.MOVIE);
             if (movie != null) {
-                this.movie = movie;
+                this.mymovie = movie;
                 movieDetailsPresenter.setView(this);
                 movieDetailsPresenter.showDetails((movie));
                 movieDetailsPresenter.showFavoriteButton(movie);
@@ -139,14 +139,14 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
     }
 
     @Override
-    public void showDetails(Movie movie) {
-        Glide.with(getContext()).load(Api.getBackdropPath(movie.getBackdropPath())).into(poster);
-        title.setText(movie.getTitle());
-        releaseDate.setText(String.format(getString(R.string.release_date), movie.getReleaseDate()));
-        rating.setText(String.format(getString(R.string.rating), String.valueOf(movie.getVoteAverage())));
-        overview.setText(movie.getOverview());
-        movieDetailsPresenter.showTrailers(movie);
-        movieDetailsPresenter.showReviews(movie);
+    public void showDetails(Movie mymovie) {
+        Glide.with(getContext()).load(Api.getBackdropPath(mymovie.getBackdropPath())).into(poster);
+        title.setText(mymovie.getTitle());
+        releaseDate.setText(String.format(getString(R.string.release_date), mymovie.getReleaseDate()));
+        rating.setText(String.format(getString(R.string.rating), String.valueOf(mymovie.getVoteAverage())));
+        overview.setText(mymovie.getOverview());
+        movieDetailsPresenter.showTrailers(mymovie);
+        movieDetailsPresenter.showReviews(mymovie);
     }
 
     @Override
@@ -252,7 +252,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
     }
 
     private void onFavoriteClick() {
-        movieDetailsPresenter.onFavoriteClick(movie);
+        movieDetailsPresenter.onFavoriteClick(mymovie);
     }
 
     @Override

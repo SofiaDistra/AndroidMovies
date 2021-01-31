@@ -12,12 +12,12 @@ import io.realm.annotations.PrimaryKey;
 public class MovieRealmObject extends RealmObject {
 
     @PrimaryKey
-    private String id;
-    private String overview;
+    private String anId;
+    private String anOverview;
     private String releaseDate;
     private String posterPath;
     private String backdropPath;
-    private String title;
+    private String aTitle;
     private double voteAverage;
 
     public static final String ID = "id";
@@ -30,19 +30,19 @@ public class MovieRealmObject extends RealmObject {
 
 
     public String getId() {
-        return id;
+        return anId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String anId) {
+        this.anId = anId;
     }
 
     public String getOverview() {
-        return overview;
+        return anOverview;
     }
 
-    public void setOverview(String overview) {
-        this.overview = overview;
+    public void setOverview(String anOverview) {
+        this.anOverview = anOverview;
     }
 
     public String getReleaseDate() {
@@ -70,11 +70,11 @@ public class MovieRealmObject extends RealmObject {
     }
 
     public String getTitle() {
-        return title;
+        return aTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitle(String aTitle) {
+        this.aTitle = aTitle;
     }
 
     public double getVoteAverage() {
@@ -86,12 +86,12 @@ public class MovieRealmObject extends RealmObject {
     }
 
     public MovieRealmObject(Movie movie) {
-        id = movie.getId();
-        overview = movie.getOverview();
+        anId = movie.getId();
+        anOverview = movie.getOverview();
         releaseDate = movie.getReleaseDate();
         posterPath = movie.getPosterPath();
         backdropPath = movie.getBackdropPath();
-        title = movie.getTitle();
+        aTitle = movie.getTitle();
         voteAverage = movie.getVoteAverage();
     }
 
